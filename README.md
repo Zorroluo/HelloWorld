@@ -1,2 +1,3 @@
 # HelloWorld
-say hi to this world
+print("Hello World")
+print("Hi, I'm Zorroluo
