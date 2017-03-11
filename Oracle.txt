@@ -1,0 +1,177 @@
+
+1.	格式化指令：设置每行显示的数据长度:SET LINESIZE 300;
+2.	格式化指令：设置每页显示的数据条数:SET PAGESIZE 30;
+3.	格式化指令：设置某个字段的占位长度：COL (SOMETHING) FOR A30
+4.	管理员登陆需要注意后缀：CON(NECT)  LOG/CODE  (AS SYSDBA)
+5.	在命令行中连接ORACLE数据库:SQLPLUS LOG/CODE
+6.	显示用户名:SHOW USER
+7.	一个用户写的所有表：SELECT * FROM TAB;
+8.	查询表结构：DESC (EMPLOYEES);
+9.	基本查询：SELECT[DISTINCT] * FROM TABLE;
+10.	特定字段和基本运算以及别名：SELECT JOB_ID,12*SALARY+1000/30 INCOME FROM TABLE;
+11.	新增常量和字符串：SELECT ‘常量’,10,JOB_ID FROM TABLE;
+12.	“||”用来连接不同字段的查询结果。SELECT * FROM ‘姓名’||LAST_NAME||FIRST_NAME  姓名 FROM TALBE.即把两列合并为一个列。（别名不建议使用中文）
+13.	运行顺序：○3SELECT(对列进行操作)   *  ○1FROM   TABLE ○2WHERE(对行进行限定) 
+14.	ORACLE 是区分大小写的。
+15.	逻辑运算NOT:SELECT * FROM TABLE WHERE NOT SALARY >2000
+16.	BETWEEN AND :SELECT * FROM EMPLOYEES WHERE SALARY BETWEEN 1500 AND 2000
+17.	SELECT * FROM TABLE WHERE ENAME IS NOT NULL或SELECT * FROM TABLE WHERE NOT ENAME IS NULL.
+18.	IN的用法：SELECT * FROM TABLE WHERE (NOT)ENAME(NOT) IN(1,2,3,);
+19.	注意：关于NOT IN 和 NULL的问题：IN中包含NULL没有任何影响；使用NOT IN中包含有NULL，不返回任何结果。
+20.	Like的用法：两个通配符“_”匹配一位，“%”匹配多位
+21.	  单行函数之字符串：函数形式：字符串 UPPER(列|字符串)。LOWER(都变小),INITCAP(首字母大写),LENGTH(字段长度)，SUBSTR(字段，开始处，长度)（截取固定长度）（ORACLE中开始字段标号为1而不会和其他程序一样），SUBSTR(考虑到又后往前截取，开始出可以为负数)。
+22.	单行函数之数字函数：ROUND（数字，位数）(四舍五入),TRUNC(),MOD(求模)(取余)
+23.	单行函数之日期函数。提供一个伪列:SYSDATE(日期时间)，SYSTIMESTAMP(具体时间)，ADD_MONTHS(SYSDATEA,NUMBER)(指定日期上加上月份),MONTHS_BETWEEN(连个日期之间的月份)，LAST_DAY(SYSDATE)(当前所在月的最后一天)，NEXT_DAY(SYSDATE,星期上)
+24.	单行函数之转换函数：TO_CHAR(把数字、日期转换为字符串)( SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')FROM DUAL;) TO_DATE(),TO_NUMBER.
+25.	单行函数之通用函数（ORACLE的特色函数）：NVL(字段（NULL），替换之). DECODE的语法：DECODE(value,if1,then1,if2,then2,if3,then3,...,else)，
+26.	插入数据：INSERT INTO REGIONS(REGION_ID,REGION_NAME) VALUES (5,'AFRICA')
+27.	多表查询的情况：SQL1991语法：SELECT [DISTINCT]* 列[别名] FROM TABLE1 ] FROM TABLE1 [CROSS JOIN TABLE2/NATURAL JOIN TABLE2/JOIN TABLE2 ON(条件)或者USING(字段)/LEFT|RIGHT|FULL OUTER JOIN TABLE2]
+28.	(结构相同的表)连接查询结果：UNION(不显示重复值)/UNION ALL/INTERSECT(交集)/MINUS(差集)
+29.	IN子函数的变形：IN(表示存在于某个集合)，=ANY(和in的意义一样)，>ANY(比子查询返回的最小值要大就行)，<ANY(比子查询返回最大值小就行)，>ALL(比子查询返回的最大值要大)，<ALL(比最小值还要小)
+30.	○5SELECT [DISTINCT] COLUMN
+○1FROM TABLE1,TABLE2
+○2WHERE 限定行
+○3GROUP BY 分组
+○4HAVING 对分组条件进行限制
+○6ORDER BY 最后一把执行排序
+以上是执行顺序，并且每个字句都可以嵌套子查询。
+
+
+数据修改：
+1.	复制表：CREATE TABLE +(NEWNAME)  AS SELECT * FROM TABLE(源表名).(ORACLE中特有)。
+2.	数据增加：INSERT INTO 表名称 [列名称1，列名称2……] VALUES(值1，值2……)。
+3.	数据更新：UPDATE 表名称 SET 字段1=值1，字段 2=值2，[WHERE 更新条件]
+4.	数据删除：DELETE FROM 表名称 [WHERE 删除条件 ]
+5.	事务管理：ROLLBACK;(未提交之前，可以重缓冲区回滚)；COMMIT;(确认更新)
+6.	死锁：更新排队。（SESSION会话）
+伪列：
+1.	ROWNUM自动生成，不是实体数据。两个作用：取出第一行记录，取出前n行记录。SELECT * FROM EMPLOYEES WHERE [ROWNUM=1|ROWNUM<=5]
+2.	程序中分页用法：嵌套ROWNUM.SELECT *FROM (SELECT COLUMN ,ROWNUM 别名 WHERE ROWNUM<=(CURRENTPAGE*LINNSIZE) ORDER BY SOMETHING) WHERE ^
+3.	行ID,ROWID.数据库物理编号，一般用户不可见，可以理解为内存。任何情况下都可以通过ROWID查询唯一一条记录。 
+4.	利用ROWID来进行删除重复数据。子查询，要善用函数(MIN() OR MAX()）
+
+表的创建和管理。
+进入SQL语言的DDL
+1.	常用数据类型：
+   
+NO	类型	作用
+1	VARCHAR2(N)	表示字符串，其中n表示最大长度，一般保存长度比较小的类容都可以使用使用此类型，例如：姓名/地址/邮编/电话（200个字以内的建议使用）
+2	NUMBER(N,M)	NUMBER(N),表示整数数据，最多不能超过n个长度，
+NUMBER(N,M):表示小数位占m位，而整数位占N-M
+3	DATE	保存日期数据
+4	CLOB	大文本数据，最多可以保存4G的文字，比如小说
+5	BLOB	保存二进制。
+
+2．创建数据表：
+CREATE TABLE member(
+		Mid		NUMBER,
+		NAME	VARCHAR2(50)  DEFAULT’无名氏’,
+		AGE		NUMBER(3),
+		BIRHTDAY DATE,
+		NOTE 	CLOB
+);
+
+2.	数据字典的概念：用户级别的：(USER_TABLES)USER_*,管理员级别:DBA_*,全部级别：ALL_*
+3.	修改表名：RENAME OLDNAME TO NEWNAME
+4.	截断：TRUNCATE TABLE NAME，一旦表被截断之后无法回滚。
+5.	复制表：CREATE TABLE NAME AS 子查询；
+6.	表的删除：DROP TABLE NAME
+7.	闪回技术：删除表之后放入了回收站，回收站表名：USER_RECYCLEBIN;回复删除的表。FLASHBACK TABLE NAME TO BEFORE DROP;
+8.	不进入回收站，强制删除数据表：DROP TABLE NAME PURGE;
+9.	删除回收站的表：PURGE TABLE NAME;
+10.	清空回收站：PURGE RECYCLEBIN;
+修改表结构：
+1.	编写脚本：脚本文件的后缀名称必须是‘*.sql’/要编写删除数据表的语法/创建数据表的语法/测试数据/执行事务提交/
+2.	增加表中的数据列：ALTER TABLE NAME ADD(字段1 类型 [default 默认值]，字段2……)；
+3.	修改表中的数据列：ALTER TABLE NAME MODIFY(……)
+4.	删除列：ALTER TABLE NAME DROP COLUMN 列名称
+5.	修改列字段名：ALTER TABLE NAME RENAME COLUME AA TO BB;
+
+约束的重要性：
+1.	六中约束类型：类型约束/非空约束/唯一约束/主键约束/检查约束/外键约束/
+2.	非空约束：NOT NULL(NK) .CREATE TALBE NAME(字段名 类型 NOT NULL,)
+3.	唯一约束：UNIQUE (UK). CREATE TALBE NAME(字段名 类型 UNIQUE,)
+4.	为不可见约束设置名称：CONSTRAINT 新名称 UNIQUE (需要设置约束的字段名)
+5.	主键约束=非空约束+唯一约束 PRIMARY KEY
+6.	检查约束：CHECK(CK) .  CONSTRAINT NEWNAME CHECK(AGE BETWEEN 0 AND 250)(尽量不要设置检查约束)
+7.	外键约束：两个表之间的关联（只能先删子表才能删除父表）（对于父子表中互为外键的情况，自能采取强制删除，语法：DROP TABLE NAME CASCADE CONSTRAINT）.字表添加外键：CONSTRAINT fp_key FOREIGN KEY (name)  REFERENCES NAME….作为外键，在父表中必须是主键或者唯一约束。。。。。。
+8.	数据的级联操作：那么建立外键是子表需要修改外键约束条件：结尾加上：ON DELETE CASECADE 或者级联更新。
+9.	增加约束：ALTER TABLE NAME ADD CONSTRAINT 约束名称 约束类型（字段名）
+10.	删除约束：ALTER TABLE NAME DROP CONSTRAINT 约束名称
+11.	所用项目中一定要约束/所有的约束在定义的表的时候	要一起定义，并且一定要设置约束名称/五种约束中一定会用到的约束：主键，非空，外键
+
+EXISTS OR NOT EXISTS 的用法。
+2、求购买的商品包含了顾客Dennis购买的所有商品的顾客信息。
+CUSTOMER:提供了所有顾客的信息
+PURCASE:提供了顾客和商品的联系
+
+第一步：求出顾客Dennis购买的商品
+第二步：求出每个顾客购买的商品
+第三步：求出购买商品包含Dennnis全部商品的顾客
+
+SELECT C.*
+FROM CUSTOMER C
+WHERE NOT EXISTS
+(SELECT PRODUCTID FROM PURCASE WHERE CUSTOMERID=(SELECT CUSTOMERID FROM CUSTOMER WHERE NAME='Dennis')
+MINUS
+SELECT PRODUCTID FROM PURCASE WHERE CUSTOMERID=C.CUSTOMERID)
+AND CUSTOMERID<>(SELECT CUSTOMERID FROM CUSTOMER WHERE NAME='Dennis');
+
+
+序列的创建：
+1.	语法：CREATE SEQUENCE即为默认序列：默认序列就是只最小值为1，步长为1，且设置有20个缓存数据。
+2.	创建序列的全部语法：CREATE SEQUENCE 序列名 [INCREAMENT BY 步长] [START WITH 开始值] [MAXVALUE 最大值|NOMAXVALUE] [MINVALUE 最小值|NOMINVALUE] [CYCLE|NOCYCLE] [CACHE 缓存数据|NOCACHE];
+3.	序列对象创建之后一定存在数据字典中。可以使用：USER_SEQUENCE.即:SELECT * FROM USER_SEQUENCES;
+4.	序列创建成功后，如何使用序列：可以使用两个伪列:序列名.nextval:表示序列的增长，每调用一次，序列加上指定的步长；序列名.currval:表示取得当前序列，
+5.	序列使用语句：INSERT INTO mytab(id,name) VALUES(myseq.nextval,'zorro')
+6.	同义词的概念（针对已有的表名而言的）NYM NAME FOR NAME.
+视图
+7.	视图概念：CREATE [OR REPLACE] VIEW (视图名（myview）) AS 子查询。创建了视图之后，存放在：user_view表中。子查询就是过于复杂和代码量较大的查询，可以返回一定的数据
+8.	视图的更新限制：子查询最后加上：WITH READ ONLY(只读视图)。
+
+索引的概念：
+1.	打开跟踪器：CONN SYS/52151 AS SYSDBA;   SET AUTOTACE ON;
+2.	一般的查询：一般是全表scan 的模式。
+3.	这样不好，需要优化。用排序好不好？不好，因为ORDER BY 的执行顺序在WHERE之后。
+4.	我们运用二叉树（对应字段和ROWID的组合）的方式来实现就称为索引：
+5.	创建索引：CREATE INDEX 索引命名 ON 表名(字段名)。
+6.	索引可以提高查询效率。
+7.	索引的使用要点：索引字段的数据不应该频繁的更改，这样会消耗大量的内存，折衷方案：再复制表中，夜间等非操作频繁的时间更新索引，那么第二天白天的数据不能通过索引查询。
+用户管理：I
+1.	运用管理员（SYS）用户创建新用户：CREATE USER ZORRO IDENTIFIED BY 52151;此时，此新用户没有任何权限。
+2.	开始一步一步授权。第一：赋予登陆权限：GRANT CREATE SESSION TO ZORRO;
+3.	建表的权限:GRANT CREATE TABLE TO ZORRO
+4.	这样太麻烦了，于是就分配了一些特定的角色。角色已经包含了特定权限。
+5.	直接分配角色：GRANT CONNECT,RESOURCE(一个已经定义的特定角色，比如只能查询) TO DOG;
+6.	密码修改问题：ALTER USER DOG IDENTIFIED BY MIAOMIAO
+7.	然密码失效，登陆后即需修改密码：ALTER USER DOG PASSWORD EXPIRE;
+8.	不太文明的用户，锁定它：ALTER USER DOG ACCOUNT LOCK;
+9.	它改好了，解锁它：ALTER USER DOG ACCOUNT UNLOCK;
+10.	对象权限的授权：对象权限只用四种：INSERT/UPDATE/DELETE/SELECT.语句：GRANT SELECT,INSERT ON HR TO DOG;
+11.	问题太大，那就回收权限：REVOKE CONNECT,RESOURCE FROM DOG;REVOKE CREATE SESSION,CREATE TABLE FROM DOG;
+12.	没啥权限，留着也没用，删：DROP USER DOG CASCADE
+
+数据库的备份操作
+1.	任何情况下系统都不能不去考虑规避风险的问题。
+2.	在硬盘上建立一个文件夹：D/backup
+3.	通过命令行备份，小数据量
+4.	真正的备份，归档备份，也成冷备份:数据库服务停止，专门去备份
+5.	需要备份一下的一些内容：
+控制文件：可以通过”v$controlfile”数据字典中找
+重做日志文件：可以通过””v$logfile”数据字典中查找
+
+
+软件开发项目一定会经历的以下几个步骤：
+获取需求阶段
+需求分析与业务设计
+数据库设计
+程序开发与业务实现
+程序的测试
+程序的运维
+
+
+数据库的设计范式：
+原则：根据业务需要尽可能的减少多表查询。
+第一范式： 数据表中每个字段都不可再分。比如：联系方式：contact.
+第二范式： 数据表中不存在非关键字段对任意一候选关键字段的部分函数依赖’
+第三范式： 数据表中不存在非关键字段对任意一候选关键字段的传递函数依赖‘

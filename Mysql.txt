@@ -1,0 +1,119 @@
+MYSQL:
+1 3306 root
+2 SHOW DATABASES;
+3 SELECT USER();
+3 SELECT VERSION();
+4 USE db_name;
+5 SELECT DATABASE();
+6 CREATE DATABASE [IF NOT EXISTS] db_name CHARACTER SET 'gbk'
+6 ALTER DATABASE [IF NOT EXISTS] db_name CHARACTER SET 'gbk'
+7 SHOW CREATE DATABASE db_name
+8 SHOW WARNINGS;
+9 DROP DATABASE [IF EXISTS] db_name
+10 SHOW TABLES [FROM db_name];
+11 CREATE TABLE tb_name(
+	id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(20) NOT NULL UNIQUE KEY,
+	age TINYINT UNSIGNED DEFAULT '27',
+	salary FLOAT(6,2) UNSIGNED,
+	birthday DATE,
+	city_id SMALLINT UNSIGNED,
+	FOREIGN KEY (cityid) REFERENCES citys (id) ON DELECT CASCADE
+	);
+13 INSERT [INTO] tb_name(col_name) VALUES()
+12 SELECT * FROM tb_name;
+13 FOREIGN KEY: CASCADE/SET NULL/RESTRICT/NO ACTION
+15 ALTER TABLE tb_name ADD[COLUMN] 
+	col_name column_definition [FIRST | AFTER col_name]
+16 ALTER TABLE tb_name DROP[COLUMN]
+17 ALTER TABLE tb_name ADD [CONSTRAINT [symbol]] UNIQUE [INDEX|KEY]
+	[index_name] [index_type] (index_col_name)
+18 ALTER TABLE tb_name DROP PRIMARY KEY
+19 SHOW INDEXES FROM tb_name
+20 ALTER TABLE tb_name DROP INDEX index_col_name
+22 ALTER TABLE tb_name CHANGE[COLUMN] old_col_name new_col_name col_defination
+23 ALTER TABLE tb_name RENAME [TO|AS] new_name
+24 RENAME TABLE tb_name TO new_name
+25 INSERT [INTO] tb_name SET col_name ={expr|DEFAULT},...
+25 INSERT [INTO] tb_name[col_name] select ...
+26 UPDATE [LOW_PRIORITY][IGNORE]table_name SET col_name = {expr|DEFAULT},
+	[col_name2={expr2|DEFAULT}][WHERE where_condition]
+27 DELETE FROM tb_name [WHERE where_condition]
+28 SELECT select_expr[,select_expr...]
+	[
+	  FROM table_references
+	  [WHERE where_condition]
+	  [GROUP BY {col_name|position}[ASC|DESC],....]
+	  [HAVING where_condition]
+	  [ORDER BY {col_name|expr|position}[ASC|DESC],...]
+	  [LIMIT{[offset,]row_count|row_count OFFSET offset}]
+	]
+29 SELECT ROUND(AVG(col_name),2) FROM tb_name
+30 SELECT * FROM tb_name WHERE col_name > [ANY|SOME|ALL](SELECT col_name2 FROM tb_name WHERE ....)
+31 DESC tb_name
+32 INSERT tb_name(col_name) SELECT [Subquery]
+33 UPDATE table_references SET col_name1 = {expr1|DEFAULT}[,col_name2={expr|DEFAULT]...
+	[WHERE where_condition]
+34 DELETE tb_name[.*] [,tb_name[.*]]...
+	FROM table_reference
+	[WHERE where_condition]
+35 SELECT CONCAT(col_name,col_name1,....)
+36 SELECT CONCAT_WS('-',col_name,col_name1)
+37 SELECT FORMAT(12344.8733,3)
+38 SELECT LOWER()
+39 SELECT UPPER()
+40 SELECT LEFT('MYSQL',3)
+41 SELECT LENGTH()
+42 SELECT LTRIM('  MYSQL')
+43 SELECT RTRIM('MYSQL   ')
+44 SELECT TRIM()
+45 SELECT SUBSTRING('MYSQL',1,3)
+46 SELECT [NOT]LIKE[%|_]
+47 SELECT REPLACE()
+48 SELECT CEIL(3.01)....4
+49 SELECT FLOAT(3.99)...3
+49 SELECT 7 DIV 4 ....1
+50 SELECT 9 % 2 ....1
+51 SELECT 9 MOD 2...1
+52 SELECT POWER(2,3)...8
+53 SELECT ROUND(3.654,0)....4
+54 SELECT TRUNCATE(123.89,0)...123
+55 BETWEEN...AND
+56 [NOT] IN()
+57 IS [NOT] NOT
+58 SELECT NOW()
+59 SELECT CURTIME()
+60 SELECT DATA_ADD('2018-3',INTERAL -1 YEAR)
+61 SELECT DATEDIFF()
+62 SELECT DATE_FORMAT('2014-3-12','%m/%d/%y')
+63 SELECT CONNEXTION_ID()
+64 SELECT MD5('AMID')
+65 SEELCT PASSWORD('AMID')
+66 SELECT DATE_FORMAT(NOW(),'%Y年%m月%d日 %H点:%i分:%s秒‘);
+67 CREATE FUNCTION f1() RETURNS VARCHAR(30)
+	RETURN DATE_FORMAT(NOW(),'%Y年%m月%d日 %H点:%i分:%s秒‘);
+68 CREATE FUNCTION f2(num1 SMALLINT UNSIGNED,num2 SMALLINT UNSIGNED)
+	RETURNS FLOAT(10,2) UNSIGNED
+	RETURN (num1 + num2)/2;
+69 DELIMITER // (修改结束符为//)
+70 DROP FUNCTION func_name
+71 存储过程：
+72 CREATE
+	[DEFINER={user|CRRENT_USER}]
+	PROCEDURE sp_name[(proc_parameter[,...]])
+	[characteristic....]routine_body
+	
+	proc_parameter:
+	[IN|OUT|INOUT]param_name type
+73 CALL sp_name[(param_name)[,....]]
+74 CREATE PROCEDURE removeUserById(IN p_id INT UNSIGNED,OUT username VARCHAR(30))
+	BEGIN
+	DELETE FROM users WHERE id = id;
+	SELECT user_naem FROM users INTO @username;
+	END
+	//
+75 DROP PROCEDURE
+76 SET @NUM = 7
+77 SELECT @NUM
+78 SELECT ROW_COUNT()
+78 
