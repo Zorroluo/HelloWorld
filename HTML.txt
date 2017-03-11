@@ -1,0 +1,273 @@
+1基本框架
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content -type" content="text/html;
+		charset=utf-8">
+		<title>my first html</title>
+	<head>
+	<body>
+		<h1>"Hello World"</h1>
+	<body>
+</html>
+
+2基本标签
+申明定义文档类型：<!DOCTYPE html>
+开始结束：<html>*</html>
+头部文件：<head>*</head>
+身体文件（即网页显示的文件）：<body>*</body>
+头部中元数据信息：<meta http-equiv="*" content="*";charset=*>
+头部中标题标签：<title>*</title>
+头部中定义的基本默认链接：<base href="https://www.google.com" target="_blank">
+头部中链接外部资源：<link rel="stylesheet" type="text/css" href="/demo/style.css">
+头部中定义脚本文件： <script>*</script>
+头部中定义样式信息：<style>*</style>
+代码注释：<!*>
+身体中段落标签：<p>*</p>
+身体中标题标签：<hx>*</hx>(其中x=1,2,...,6)
+身体中强调标签1：<em>*</em>(显示为斜体)
+身体中强调标签2：<strong>*<strong>(显示为粗体)
+身体中单独样式标签：<span>*</span>(需要结合头部文件中<style>标签使用)
+身体中引用标签1：<q>*</q>(显示效果为自动添加引号，少量引用)
+身体中引用标签2：<blockquote>*</blockquote>(显示为缩进模式，长文引用)
+身体中换行符标签：<br>
+身体中空格标签：&nbsp;
+身体中水平横线标签：<hr>
+身体中地址标签：<address>*</address>(显示为斜体)
+身体中代码标签1：<code>*</code>(显示为保留原格式)
+身体中代码标签2：<pre>*</pre>(显示为保留原格式，适用于大量代码)
+身体中列表信息标签1：
+	<ul>
+		<li>*</li>
+		,,,,,,,,,
+		<li>*</li>
+	</ul>(显示为每行前一个黑点)
+身体中列表信息标签2：
+	<ol>
+		<li>*</li>
+		,,,,,,,,,
+		<li>*</li>
+	</ol>（显示为每行前一个序号）
+身体中独立逻辑排版标签：<div>*</div>
+身体中表格标签：
+	<table>
+		<tr>
+			<th>*</th>(列名)
+			,,,,,,,,,,
+			<th>*</th>
+		</tr>
+		.......
+		<tr>
+			<td>*</td>(单元格数据)
+			,,,,,,,,,,
+			<td>*</td>
+		</tr>
+	</table>
+头部中CSS样式标签：<style type="text/css">*(talbe/span.....)</style>
+身体中表格优化标签：
+	<table id="定义个人ID" class="类名" summary="介绍表格简介">
+		<caption>显示表格标题</caption>
+		<tr><th>*</th></tr>
+		<tr><td>*</td></tr>
+	</table>
+身体中超链接标签：<a href="目标网址" title="鼠标停留时显示的文本"			target="_blank">*</a>
+身体中超链接的邮件链接功能：
+	<a href="mailto:zorro.luo@outlook.com?cc=zorro.luo.hang@gmail.com
+	?bcc=xx@gmail.com;oo@gmail.com?subject=发个邮件?body=哈哈哈。做个试验">点击即可发送邮件给我</a>
+身体中图片标签：<img src="图片地址" alt="下载失败时的替换文本"
+	title="提示文本">
+身体中表单标签：
+  <form method="传递方式(post/get)" action="服务器文件(save.php)">
+	<label for "username">用户名：</label>
+	<input type="text" name="username" />
+	<label for="pass">密码：</label>
+	<input type="password" name="pass" />
+  </form>
+  
+标签补充
+定义缩写：<abbr title="World Health Organization">WHO</abbr>
+定义粗体：<b>*</b>
+定义斜体：<i>*</i>
+定义标题：<cite>*</cite>
+定义删除文字：<del>*</del>
+定义一个描述列表：
+	<dl>
+		<dt>*</dt>
+			<dd>*</dd>
+		<dt>*</dt>
+			<dd>*</dd>
+	</dl>
+
+
+ 
+认识CSS样式：
+	<style type="text/css">*</style>
+对style中*内容进行编辑
+	例如：(对某一段文字进行字体颜色等设置)
+	<style type="text/css">
+		p(选择器){
+			font-size(属性）:12px（值）;
+			color:red; /*CSS注释语句*/
+			font-weight:bold;
+		}
+		span(同上){
+			color:bule;
+			}
+	</style>
+
+CSS样式代码的插入基本分为三种：内联式，嵌入式，外部式
+内联式：<p style="color:red; font-size:12px">*</p>
+嵌入式：见上两条代码
+外部式：<link href="base.css" rel="stylesheet" type="text/css" />(link标签放在头部中) (即保存在CSS的单独文件内：base.css)
+（三种方式的优先级的原则：就近原则）
+CSS样式选择器：
+同上的例子：
+p , span 都是选择器的一种
+选择器的分类：
+标签选择器：<html>,<head>,<body>,<p>......
+	标签名（例如：body){ css样式 }
+类选择器：
+	.类名（例如：.green){css样式 }
+ID选择器：
+	#ID名（例如：#green){css样式 }
+子选择器：
+	用于选择指定标签元素的第一代子元素（用>连接）
+	例如：.food>li{border:1px solid red;)
+包含（后代）选择器：
+	用于选择指定标签元素下的所有后辈元素（用 空格 连接）
+	例如： .first span{color:red;}
+通用选择器：
+	使用一个（*）号指定，它的作用是匹配html中所有的标签元素。
+	例如： *{color:red;}
+伪类选择符：
+	它允许给HTML不存在的标签（标签的某种状态）设置样式
+	例如： a:hover{color:red;}(a标签中鼠标滑过的状态特效)
+分组选择符：
+	同时对多个不同的样式设置格式：（使用逗号隔开）
+	例如： h1,span{color:red;}
+
+选择器样式默认是：继承的关系
+选择器选择样式的特殊性（权重问题）
+下面是权重规则：
+	标签的权重为1，类的权重为10，ID的权重为100，继承的权重0.1,最高权重：!important
+	例如：p{color:red !important;}
+	
+CSS中对选中字体设置样式：
+字体：body{font-family:"宋体";}
+字号,颜色：p{font-size:12px; color:#666}
+粗体：span{font-weight:bold;}
+斜体：p a{font-style:italic;}
+下滑线：.green span{text-decoration:underline;}
+删除线：.oldPrice{text-decoration:line-through}
+缩进： p{text-indent:2em;}
+行间距： p{line-height:1.5em;}
+中文字间距，字母间距：h1{letter-spacing:50px;}
+对齐,居中： h1{text-align:center;}
+
+CSS中的盒模型：
+	CSS中对HTML中标签元素大体分为三种不同类型：
+	块状元素：(特点：每个块状元素都是从新的一行开始，其后元素也是另起一行；元素的高度等都可以设置；元素的宽度默认和父类容器的100%)
+	<div>,<p>,<h1>,<ol>,<ul>,<dl>,<table>,<address>,<blockquote>,<form>..
+	内联元素：（特点：和其他元素在同一行上；元素的高度等不可设置；元素宽度不可改变）
+	<a>,<span>,<br/>,<i>,<em>,<strong>,<lable>,<q>,<var>,<cite>,,,,
+	内联块状元素：(特点：和其他元素都在同一行；元素高度等可以设置)
+	<img>, <input>....
+	不同类型元素见可以强制申明转化：
+	例如：a{display:block;}(a本为内联元素，申明转化为了块状元素)
+		div{display:inline;}(设置为内联元素)
+		img{display:inline-block}(设置为内联块状元素)
+		
+盒子模型的边框：
+	div{border:2px solid red;}(边框的简写)
+	div{border-with:2px(thin/medium/thick);
+		border-style:solid(dashed/dotted);
+		border-color:red(#888);
+	}
+	边框有四个，可以每一个单独设置格式：
+	div{border-bottom:1px solid red;
+		border-top:1px dashed green;
+		border-right:2px dotted yellow;
+		border-left: thick solid blue;
+	}
+盒子模型的实际高度和宽度：
+	div{width:200px;
+		padding:20px;
+		border:1px solid red;
+		margin:10px;
+		}
+盒子模型的填充：
+	div{padding:20px 10px 15px 30px;}
+	div{padding-top:20px;
+		padding-right:10px;
+		padding-bottom:15px;
+		padding-left:30px;
+		}
+盒模型的边界：
+	div{margin: 20px 10px 15px 30px}
+	同上的例子：
+
+CSS布局模型：
+	1，流体模型(Flow)(默认模型，特点：块状元素都会在所处的包含元素内自上而下安顺序垂直延伸分布，因为在默认状态下，块状元素的宽度都为100%。实际上，块状元素都会以行的形式占据位置；内联元素都处在包含元素内从左到右水平分布显示)
+	2，浮动模型(Float)（可以通过设置使得块状元素水平排列）
+		例如：
+			div{width:200px;
+				height:200px;
+				border:2px red solid;
+				float:left;
+			}
+	3，层模型(Layer)
+		层模型有三种形式：
+			1绝对定位（position:absolute)
+			2相对定位（position:relative)
+			3固定定位（position:fixed)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

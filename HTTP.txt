@@ -1,0 +1,91 @@
+HTTP协议：
+0、HTTP是基于TCP/IP协议的应用层协议。它不涉及数据包（packet)的传输，
+主要规定了客户端和服务器之间的通信格式，默认使用80端口。
+1、o.9版的HTTP请求：
+	GET/index.html
+2、1.0版的HTTP请求的例子：
+	GET/HTTP/1.0
+	User-Agent:Mozilla/5.0(Macintosh;Intel Mac OS X 10_10_5)
+	Accept: */*
+3、1.0中除了常见的GET命令，还引入了：POST和HEAD命令。
+	丰富了浏览器和服务器的互动手段；每次通讯都需要包括头部信息
+	（HTTP header),用来描述一些元数据
+	还新增了status code,authorization,cache,content encoding
+4,1.0中回应的格式：
+	HTTP/1.0 200 OK
+	Content-Type: text/plain
+	Content-Length: 137582
+	Expires: Thu, 05 Dec 1997 16:00:00 GMT
+	Last-Modified: Wed, 5 August 1996 15:55:28 GMT
+	Server: Apache 0.84
+	
+	<html>
+		<body>Hello World</body>
+	</html>
+	回应的格式是“头信息 + 一个空行（\r\n） + 数据”。 其中，第一个
+	行是“协议版本 +状态码（status code） + 状态描述”。
+	
+5、Content-Type字段：
+	1.0中规定，头信息必须是ASCII码，后面随意。因此服务器相应是必须
+	告诉客户端数据是跟么格式，这个就是CONTENT-TYPE字段的作用
+	常见的Content-Type:
+	text/plain, text/html, text/css, image/jpeg, image/png, image/svg+xml,
+	audio/mp4, video/mp4, application/javascript, application/pdf, 
+	application/zip, application/atom+xml
+	这些数据类型总称为：MIME type,
+	除了预定义的类型，厂商还可以自定义类型
+	MIME TYPE还可以在尾部使用分号，添加参数
+	Content-Type: text/html; charset=utf-8
+	客户端在请求时可以用Accept字段来声明自己可以接受那些数据类型：
+	Accept: */*(这个是任何格式)
+6，Content-Encoding字段：
+	由于发送的数据可以使任何格式，因此可以把数据压缩后再发送，
+	Content-Encoding字段就是来说明数据的压缩方法的：
+	Content-Encoding:gzip/compress/deflate
+	客户端在请求时，用Accept-Encoding字段来说明自己可以接受的压缩方法：
+	Accept-Encoding: gzip, deflate
+	
+7,TCP连接问题：
+	Connection: keep-alive
+	Connection: close
+8,管道机制：
+	pipelining:即同一个TCP连接里面客户端可以同时发送多个请求
+9，当有了管道机制之后，一个TCP连接现在可以传送多个回应，因此
+	就需要一个机制，区分数据包是属于那一个回应的。这个就是
+	Content-length字段的作用，申明本次回应的数据长度
+	Content-length: 3495
+
+10,分块传输编码：
+	使用Content-length 字段的前提条件是，服务器发送回应之前，必须知道回应的数据长度
+	对于一些很耗时的动态操作来说，这就意味着，服务器要等到所有的操作完成，才能发送数据，这样显然效率不是最好的，更好的处理办法是，产生一块数据，
+	就发送一块，采用“流模式”（stream)取代“缓存模式”（buffer)
+	因此，1.1版本规定可以不使用Content-length字段，而使用“分块传输代码”
+	（chunked transfer encoding）。只要请求或者回应的头信息有Transfer-Encoding字段，就表明回应将由数量未定的数据块组成。
+	Transfer-Encoding: chunked
+	回应例子：
+	HTTP/1.1 200 OK
+	Content-Type: text/plain
+	Transfer-Encoding: chunked
+	
+	25
+	This is the data in the first chunked
+	
+	1C(十六进制)
+	and this is the second one
+	
+	3
+	con
+	
+	8
+	sequence
+	
+	0
+	
+11,1.1中新增了许多动词方法：PUT, PATCH, HEAD, OPTIONS, DELETE
+	客户端请求的头信息新增了HOST字段，用来指定服务器的区域名：
+	Host: www.example.com
+	有了host字段，就可以将请求发往同一台服务器上的不同网站，为虚拟主机的兴起打下基础
+	
+12，1.1的缺点：由于同一个TCP连接里面，所有数据通信都是按次序进行的，服务器只能回应一个，才能进行下一个，如果前面的回应特别慢，后面的就需要排队，这个
+称为：“队头堵塞”(Head-of-line blocking)
+	
